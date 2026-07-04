@@ -21,27 +21,18 @@
     const { useState, useEffect } = React;
 
     // ==========================================
-    // ⚠️ PASTE YOUR FIREBASE CONFIGURATION HERE
+    // YOUR FIREBASE CONFIGURATION (Corrected)
     // ==========================================
-    // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+    const firebaseConfig = {
+      apiKey: "AIzaSyDnaMR7ePIsCEYjE6N3Py9rGvxKSwHwMRM",
+      authDomain: "agency-project-monitor.firebaseapp.com",
+      projectId: "agency-project-monitor",
+      storageBucket: "agency-project-monitor.firebasestorage.app",
+      messagingSenderId: "576801822892",
+      appId: "1:576801822892:web:9acc7293573dff5a1fe709"
+    };
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyDnaMR7ePIsCEYjE6N3Py9rGvxKSwHwMRM",
-  authDomain: "agency-project-monitor.firebaseapp.com",
-  projectId: "agency-project-monitor",
-  storageBucket: "agency-project-monitor.firebasestorage.app",
-  messagingSenderId: "576801822892",
-  appId: "1:576801822892:web:9acc7293573dff5a1fe709"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
-    // Initialize Database
+    // Initialize Database using the Compat method
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
@@ -167,38 +158,38 @@ const app = initializeApp(firebaseConfig);
                         <tr key={project.id} className="hover:bg-slate-50/50 transition-colors">
                           <td className="p-3">
                             {isEditing ? (
-                              <select value={editFormData.category} onChange={(e) => setEditFormData({...editFormData, category: e.target.value})} className="border rounded p-1 w-full text-xs">
+                              <select value={editFormData.category || 'Infrastructure'} onChange={(e) => setEditFormData({...editFormData, category: e.target.value})} className="border rounded p-1 w-full text-xs">
                                 <option>Infrastructure</option><option>Facility Equipment</option><option>Medical Equipment</option><option>Other Projects</option>
                               </select>
                             ) : <span className="font-semibold text-blue-800">{project.category}</span>}
                           </td>
                           <td className="p-3">
                             {isEditing ? (
-                              <input type="text" value={editFormData.title} onChange={(e) => setEditFormData({...editFormData, title: e.target.value})} className="border rounded p-1 w-full min-w-[150px] text-xs" />
+                              <input type="text" value={editFormData.title || ''} onChange={(e) => setEditFormData({...editFormData, title: e.target.value})} className="border rounded p-1 w-full min-w-[150px] text-xs" />
                             ) : <span className="font-semibold text-slate-900">{project.title}</span>}
                           </td>
                           <td className="p-3">
                             {isEditing ? (
                               <div className="space-y-1">
-                                <input type="number" value={editFormData.originalCost} onChange={(e) => setEditFormData({...editFormData, originalCost: e.target.value})} className="border rounded p-1 w-full text-xs" />
-                                <input type="number" value={editFormData.revisedCost} onChange={(e) => setEditFormData({...editFormData, revisedCost: e.target.value})} className="border rounded p-1 w-full text-xs" />
+                                <input type="number" value={editFormData.originalCost || 0} onChange={(e) => setEditFormData({...editFormData, originalCost: e.target.value})} className="border rounded p-1 w-full text-xs" />
+                                <input type="number" value={editFormData.revisedCost || 0} onChange={(e) => setEditFormData({...editFormData, revisedCost: e.target.value})} className="border rounded p-1 w-full text-xs" />
                               </div>
                             ) : (
                               <div className="flex flex-col">
-                                <span>Php {Number(project.originalCost).toLocaleString()}</span>
-                                <span className="text-xs text-slate-400">Php {Number(project.revisedCost).toLocaleString()}</span>
+                                <span>Php {Number(project.originalCost || 0).toLocaleString()}</span>
+                                <span className="text-xs text-slate-400">Php {Number(project.revisedCost || 0).toLocaleString()}</span>
                               </div>
                             )}
                           </td>
-                          <td className="p-3">{isEditing ? <input type="date" value={editFormData.originalStartDate} onChange={(e) => setEditFormData({...editFormData, originalStartDate: e.target.value})} className="border rounded p-1 text-xs" /> : project.originalStartDate}</td>
-                          <td className="p-3">{isEditing ? <input type="date" value={editFormData.actualStartDate} onChange={(e) => setEditFormData({...editFormData, actualStartDate: e.target.value})} className="border rounded p-1 text-xs" /> : project.actualStartDate}</td>
-                          <td className="p-3">{isEditing ? <input type="date" value={editFormData.originalCompletionDate} onChange={(e) => setEditFormData({...editFormData, originalCompletionDate: e.target.value})} className="border rounded p-1 text-xs" /> : project.originalCompletionDate}</td>
-                          <td className="p-3">{isEditing ? <input type="date" value={editFormData.actualCompletionDate} onChange={(e) => setEditFormData({...editFormData, actualCompletionDate: e.target.value})} className="border rounded p-1 text-xs" /> : project.actualCompletionDate}</td>
-                          <td className="p-3">{isEditing ? <input type="text" value={editFormData.slippage} onChange={(e) => setEditFormData({...editFormData, slippage: e.target.value})} className="border rounded p-1 w-full min-w-[60px] text-xs" /> : <span className="font-bold">{project.slippage}</span>}</td>
-                          <td className="p-3">{isEditing ? <input type="text" value={editFormData.timeElapsed} onChange={(e) => setEditFormData({...editFormData, timeElapsed: e.target.value})} className="border rounded p-1 w-full min-w-[70px] text-xs" /> : project.timeElapsed}</td>
+                          <td className="p-3">{isEditing ? <input type="date" value={editFormData.originalStartDate || ''} onChange={(e) => setEditFormData({...editFormData, originalStartDate: e.target.value})} className="border rounded p-1 text-xs" /> : project.originalStartDate}</td>
+                          <td className="p-3">{isEditing ? <input type="date" value={editFormData.actualStartDate || ''} onChange={(e) => setEditFormData({...editFormData, actualStartDate: e.target.value})} className="border rounded p-1 text-xs" /> : project.actualStartDate}</td>
+                          <td className="p-3">{isEditing ? <input type="date" value={editFormData.originalCompletionDate || ''} onChange={(e) => setEditFormData({...editFormData, originalCompletionDate: e.target.value})} className="border rounded p-1 text-xs" /> : project.originalCompletionDate}</td>
+                          <td className="p-3">{isEditing ? <input type="date" value={editFormData.actualCompletionDate || ''} onChange={(e) => setEditFormData({...editFormData, actualCompletionDate: e.target.value})} className="border rounded p-1 text-xs" /> : project.actualCompletionDate}</td>
+                          <td className="p-3">{isEditing ? <input type="text" value={editFormData.slippage || ''} onChange={(e) => setEditFormData({...editFormData, slippage: e.target.value})} className="border rounded p-1 w-full min-w-[60px] text-xs" /> : <span className="font-bold">{project.slippage}</span>}</td>
+                          <td className="p-3">{isEditing ? <input type="text" value={editFormData.timeElapsed || ''} onChange={(e) => setEditFormData({...editFormData, timeElapsed: e.target.value})} className="border rounded p-1 w-full min-w-[70px] text-xs" /> : project.timeElapsed}</td>
                           <td className="p-3">
                             {isEditing ? (
-                              <select value={editFormData.status} onChange={(e) => setEditFormData({...editFormData, status: e.target.value})} className="border rounded p-1 w-full text-xs">
+                              <select value={editFormData.status || 'Pipeline'} onChange={(e) => setEditFormData({...editFormData, status: e.target.value})} className="border rounded p-1 w-full text-xs">
                                 <option>Pipeline</option><option>In Progress</option><option>Suspended</option><option>Completed</option>
                               </select>
                             ) : <span className={`px-2 py-1 rounded text-xs font-semibold ${project.status === 'Completed' ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'}`}>{project.status}</span>}
